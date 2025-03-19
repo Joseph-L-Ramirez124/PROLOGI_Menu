@@ -1,7 +1,6 @@
 # PROLOGI_Menu
 
-# Project Code Completion
-# 50%
+# Project Code Completion: 50%
  
  
 
