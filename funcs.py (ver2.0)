@@ -1,0 +1,35 @@
+def burger(item):
+    burger_list = [x for x in item if "BURGER" in x]
+    return len(burger_list)
+
+def soda(item):
+    soda_list = [y for y in item if "SODA" in y]
+    return len(soda_list)
+
+def fries(item):
+    fries_list = [z for z in item if "FRIES" in z]
+    return len(fries_list)
+
+def burger_total(item):
+    return burger(item) * 500
+
+def soda_total(item):
+    return soda(item) * 80
+
+def fries_total(item):
+    return fries(item) * 200
+
+def price_total(item):
+    return burger_total(item) + soda_total(item) + fries_total(item)
+
+def burger_r(item):
+    if burger(item) > 0:
+        print(f"{burger(item)}x           BURGERS         PHP 500                 PHP {burger_total(item)}")
+
+def fries_r(item):
+    if fries(item) > 0:
+        print(f"{fries(item)}x           FRIES           PHP 200                 PHP {fries_total(item)}")
+
+def soda_r(item):
+    if soda(item) > 0:
+        print(f"{soda(item)}x           SODAS           PHP 80                  PHP {soda_total(item)}")
