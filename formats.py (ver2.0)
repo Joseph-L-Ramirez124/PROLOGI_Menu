@@ -1,0 +1,48 @@
+def mod_menu(order):
+    print("Current Order:")
+    for item in order:
+        print(f"- {item}")
+    print("------")
+
+def price_total(order):
+    total = 0
+    for item in order:
+        if item == "BURGER":
+            total += 500  # Price for a burger
+        elif item == "FRIES":
+            total += 200  # Price for fries
+        elif item == "SODA":
+            total += 80   # Price for soda
+    return total
+
+def burger_r(order):
+    burger_count = order.count("BURGER")
+    if burger_count > 0:
+        print(f"{burger_count} x BURGER    PHP 500.00  PHP {burger_count * 500:.2f}")
+
+def fries_r(order):
+    fries_count = order.count("FRIES")
+    if fries_count > 0:
+        print(f"{fries_count} x FRIES     PHP 200.00  PHP {fries_count * 200:.2f}")
+
+def soda_r(order):
+    soda_count = order.count("SODA")
+    if soda_count > 0:
+        print(f"{soda_count} x SODA     PHP 80.00   PHP {soda_count * 80:.2f}")
+
+def receipt(order, mode):
+    print("Receipt:")
+    burger_r(order)
+    fries_r(order)
+    soda_r(order)
+    total = price_total(order)
+    if mode == "PWD":
+        discount = total * 0.20
+        total -= discount
+        print(f"PWD Discount (20%)        -PHP {discount:.2f}")
+    elif mode == "SENIOR":
+        discount = total * 0.20
+        total -= discount
+        print(f"Senior Discount (20%)     -PHP {discount:.2f}")
+    
+    print(f"TOTAL:                     PHP {total:.2f}")
