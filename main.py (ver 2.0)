@@ -1,0 +1,111 @@
+from funcs import *  # Importing functions 
+from formats import *  # Importing formats 
+import tkinter as tk
+from tkinter import messagebox
+
+def main():
+    root = tk.Tk()
+    root.title("Derivatived's Burgeria")
+    root.geometry("600x950")
+    root.config(bg="#f5f5f5")  
+    
+    header = tk.Label(root, text="Welcome to Derivatived's Burgeria", font=("Helvetica", 20, "bold"), bg="#f5f5f5")
+    header.pack(pady=20)
+
+    menu_frame = tk.Frame(root, bg="#f5f5f5")
+    menu_frame.pack(pady=20)
+
+    customer_order = []
+
+    def add_item(item, quantity):
+        for _ in range(quantity):
+            customer_order.append(item)
+        update_receipt()
+    
+    def remove_item(item, quantity):
+        for _ in range(quantity):
+            if item in customer_order:
+                customer_order.remove(item)
+        update_receipt()
+
+    def update_receipt():
+        if discount_var.get() == "PWD":
+            cus_mode = "PWD"
+            discount = 0.20
+        elif discount_var.get() == "SENIOR":
+            cus_mode = "SENIOR"
+            discount = 0.20
+        else:
+            cus_mode = "NO DISCOUNT"
+            discount = 0.0
+
+        total_price = price_total(customer_order)
+        discounted_price = total_price * (1 - discount)
+
+        receipt_output.config(state=tk.NORMAL)
+        receipt_output.delete(1.0, tk.END) 
+        for item in set(customer_order):
+            count = customer_order.count(item)
+            price = 500 if item == "BURGER" else 200 if item == "FRIES" else 80
+            receipt_output.insert(tk.END, f"{count}x {item} - PHP {price * count}\n")
+        receipt_output.insert(tk.END, f"TOTAL: PHP {total_price:.2f}\n")
+        if discount > 0:
+            receipt_output.insert(tk.END, f"Discount ({cus_mode}): -PHP {total_price * discount:.2f}\n")
+            receipt_output.insert(tk.END, f"FINAL TOTAL: PHP {discounted_price:.2f}\n")
+        receipt_output.config(state=tk.DISABLED)
+
+    def show_receipt():
+        update_receipt()
+    
+    tk.Label(root, text="Select Quantity of Burgers:", font=("Helvetica", 12), bg="#f5f5f5").pack(pady=5)
+    burger_quantity = tk.Spinbox(root, from_=0, to=100, width=5, font=("Helvetica", 12))
+    burger_quantity.pack(pady=5)
+    
+    burger_button = tk.Button(root, text="Add Burger (PHP 500)", command=lambda: add_item("BURGER", int(burger_quantity.get())),
+                              font=("Helvetica", 12), bg="#4CAF50", fg="white", relief="raised", width=20)
+    burger_button.pack(pady=5)
+    remove_burger_button = tk.Button(root, text="Remove Burger", command=lambda: remove_item("BURGER", int(burger_quantity.get())),
+                                     font=("Helvetica", 12), bg="#D32F2F", fg="white", relief="raised", width=20)
+    remove_burger_button.pack(pady=5)
+    
+    tk.Label(root, text="Select Quantity of Fries:", font=("Helvetica", 12), bg="#f5f5f5").pack(pady=5)
+    fries_quantity = tk.Spinbox(root, from_=0, to=100, width=5, font=("Helvetica", 12))
+    fries_quantity.pack(pady=5)
+    
+    fries_button = tk.Button(root, text="Add Fries (PHP 200)", command=lambda: add_item("FRIES", int(fries_quantity.get())),
+                             font=("Helvetica", 12), bg="#FF9800", fg="white", relief="raised", width=20)
+    fries_button.pack(pady=5)
+    remove_fries_button = tk.Button(root, text="Remove Fries", command=lambda: remove_item("FRIES", int(fries_quantity.get())),
+                                    font=("Helvetica", 12), bg="#D32F2F", fg="white", relief="raised", width=20)
+    remove_fries_button.pack(pady=5)
+    
+    tk.Label(root, text="Select Quantity of Sodas:", font=("Helvetica", 12), bg="#f5f5f5").pack(pady=5)
+    soda_quantity = tk.Spinbox(root, from_=0, to=100, width=5, font=("Helvetica", 12))
+    soda_quantity.pack(pady=5)
+    
+    soda_button = tk.Button(root, text="Add Soda (PHP 80)", command=lambda: add_item("SODA", int(soda_quantity.get())),
+                            font=("Helvetica", 12), bg="#2196F3", fg="white", relief="raised", width=20)
+    soda_button.pack(pady=5)
+    remove_soda_button = tk.Button(root, text="Remove Soda", command=lambda: remove_item("SODA", int(soda_quantity.get())),
+                                   font=("Helvetica", 12), bg="#D32F2F", fg="white", relief="raised", width=20)
+    remove_soda_button.pack(pady=5)
+
+    discount_var = tk.StringVar(value="NO DISCOUNT")
+    
+    tk.Label(root, text="Select Discount:", font=("Helvetica", 14), bg="#f5f5f5").pack(pady=10)
+    
+    tk.Radiobutton(root, text="PWD", variable=discount_var, value="PWD", font=("Helvetica", 12), bg="#f5f5f5", command=update_receipt).pack(anchor=tk.W)
+    tk.Radiobutton(root, text="SENIOR", variable=discount_var, value="SENIOR", font=("Helvetica", 12), bg="#f5f5f5", command=update_receipt).pack(anchor=tk.W)
+    tk.Radiobutton(root, text="No Discount", variable=discount_var, value="NO DISCOUNT", font=("Helvetica", 12), bg="#f5f5f5", command=update_receipt).pack(anchor=tk.W)
+
+    finalize_button = tk.Button(root, text="Finalize Order", command=show_receipt,
+                                font=("Helvetica", 14, "bold"), bg="#FF5722", fg="white", relief="raised", width=20)
+    finalize_button.pack(pady=30)
+
+    receipt_output = tk.Text(root, height=10, width=70, font=("Courier", 12), wrap=tk.WORD, bg="#f5f5f5", state=tk.DISABLED)
+    receipt_output.pack(pady=20)
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
